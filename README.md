@@ -29,6 +29,7 @@ nano Linux_Terminal_File_Telegram_Je_Bot.py
 ```
 BOT_TOKEN = "YOUR_BOT_TOKEN"
 CHAT_ID = "YOUR_CHAT_ID"
+SUDO_PASSWORD = "YOUR_PASSWORD_SUDO"
 ```
 
 `YOUR_BOT_TOKEN` — вставь сюда токен твоего бота, который дал @BotFather  
