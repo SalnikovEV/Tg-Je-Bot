@@ -10,10 +10,12 @@ import subprocess
 import os
 
 # === Настройки ===
-BOT_TOKEN = "" # надо создать бота в @BotFather
-CHAT_ID = ""  #можно узнать, написав боту @userinfobot
+BOT_TOKEN = ""                                         # надо создать бота в @BotFather
+CHAT_ID = ""                                           # можно узнать, написав боту @userinfobot
 API_URL = f"https://api.telegram.org/bot{BOT_TOKEN}/"
-DOWNLOAD_DIR = "py_d"  # куда сохранять файлы
+DOWNLOAD_DIR = "py_d"                                  # куда сохранять файлы
+SUDO_PASSWORD = "твой_пароль_для_sudo"                 # будб аккуратен!!!
+
 
 # === Создаём папку, если нет ===
 os.makedirs(DOWNLOAD_DIR, exist_ok=True)
@@ -60,14 +62,29 @@ def download_file(file_id):
 # === Выполнение команды ===
 def run_command(cmd):
     try:
-        output = subprocess.check_output(cmd, shell=True, stderr=subprocess.STDOUT, text=True, timeout=30)
+        if cmd.startswith("sudo "):
+            cmd = cmd.replace("sudo ", "", 1)
+            full_cmd = f"echo {SUDO_PASSWORD} | sudo -S {cmd}"
+        else:
+            full_cmd = cmd
+
+        output = subprocess.check_output(
+            full_cmd,
+            shell=True,
+            stderr=subprocess.STDOUT,
+            text=True,
+            timeout=30
+        )
+
         if not output.strip():
             output = "(Команда выполнена, но без вывода)"
         return output
+
     except subprocess.CalledProcessError as e:
         return f"Ошибка выполнения:\n{e.output}"
     except subprocess.TimeoutExpired:
         return "⏰ Время выполнения команды истекло."
+
 
 # === Основной цикл ===
 def main():
