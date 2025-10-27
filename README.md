@@ -1,8 +1,8 @@
 # Tg-Je-Bot
-# this repository will contain my telegram bots (Je_Bots)
+# This repository will contain my telegram bots. I call them Je_Bot.
 
 
-# 1. Linux Terminal & File Telegram Bot
+# 1. Linux Terminal File Telegram Je Bot
 Простой Telegram-бот для управления MacOS/Linux/OrangePi... через чат.  
 Позволяет:
 - Выполнять команды терминала (`/ls`, `/python3 script.py` и т.д.)
