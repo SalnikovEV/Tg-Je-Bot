@@ -60,10 +60,10 @@ After=network-online.target
 Wants=network-online.target
 
 [Service]
-ExecStart=/usr/bin/python3 /Linux_Terminal_File_Telegram_Je_Bot.py
+ExecStart=/usr/bin/python3 /home/!!!user!!!/Linux_Terminal_File_Telegram_Je_Bot.py
 Restart=on-failure
 User=!!!!
-WorkingDirectory=/
+WorkingDirectory=/home/ev-ora
 StandardOutput=inherit
 StandardError=inherit
 
@@ -72,8 +72,8 @@ WantedBy=multi-user.target
 ```
 
 ⚠️ Обрати внимание:  
-`User=____` — это пользователь Linux, от которого будет запускаться бот.  
-ExecStart — полный путь до скрипта. В примере мы помещаем файл в корень /. Если путь другой — укажи его.  
+`User=____` — это пользователь Linux, от которого будет запускаться бот (Это то что пред @ d терминале )  
+`ExecStart`— полный путь до скрипта. В примере у меня так, работает на Ubuntu (если затык -> то GPT)  
 
 Сохрани: Ctrl+O, Enter → Ctrl+X.  
 
