@@ -38,7 +38,7 @@ def get_updates(offset=None):
         return {}
 
 # === Скачивание файла ===
-def download_file(file_id):
+def download_file(file_id, file_name):
     # 1. Получаем путь файла на серверах Telegram
     resp = requests.get(API_URL + "getFile", params={"file_id": file_id})
     data = resp.json()
@@ -47,7 +47,6 @@ def download_file(file_id):
         return
 
     file_path = data["result"]["file_path"]
-    file_name = os.path.basename(file_path)
     local_path = os.path.join(DOWNLOAD_DIR, file_name)
 
     # 2. Скачиваем сам файл
@@ -85,11 +84,17 @@ def run_command(cmd):
     except subprocess.TimeoutExpired:
         return "⏰ Время выполнения команды истекло."
 
-
 # === Основной цикл ===
 def main():
     send_message("🤖 Бот запущен и готов принимать команды ✅")
-    last_update_id = None
+
+    # --- очищаем все старые апдейты, чтобы не выполнять старые команды ---
+    updates = get_updates()
+    if "result" in updates and updates["result"]:
+        last_update_id = updates["result"][-1]["update_id"] + 1
+    else:
+        last_update_id = None
+    # ----------------------------------------------------------------------
 
     while True:
         updates = get_updates(last_update_id)
@@ -108,14 +113,14 @@ def main():
                     file_id = message["document"]["file_id"]
                     file_name = message["document"]["file_name"]
                     send_message(f"📦 Получен файл: {file_name}\n⏳ Сохраняю...")
-                    download_file(file_id)
+                    download_file(file_id, file_name)
                     continue
 
                 # === Если пришло текстовое сообщение ===
                 text = message.get("text", "")
                 if not text:
                     continue
-
+                    
                 if text.startswith("/"):
                     cmd = text[1:].strip()
                     send_message(f"▶ Выполняю: `{cmd}`")
@@ -125,6 +130,5 @@ def main():
                     send_message(f"🖥 Результат:\n{output}")
 
         time.sleep(2)
-
 if __name__ == "__main__":
     main()
